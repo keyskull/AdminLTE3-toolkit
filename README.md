@@ -1,6 +1,6 @@
 # adminltelte3-tookit
 
-A fast tool for establish webpages with Adminltelte 3 template.
+A fast tool for establish webpages with [Adminlte 3.0.5](https://github.com/ColorlibHQ/AdminLTE/tree/v3.0.5).
 
 ## License
 
