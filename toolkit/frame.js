@@ -10,23 +10,23 @@ function Frame(){
         }
     
         // <!-- Font Awesome -->
-        addcss("res/plugins/fontawesome-free/css/all.min.css");
+        addcss("plugins/fontawesome-free/css/all.min.css");
         // <!-- Ionicons -->
         addcss("https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css");
         // <!-- Tempusdominus Bbootstrap 4 -->
-        addcss("res/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css");
+        addcss("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css");
         // <!-- iCheck -->
-        addcss("res/plugins/icheck-bootstrap/icheck-bootstrap.min.css");
+        addcss("plugins/icheck-bootstrap/icheck-bootstrap.min.css");
         // <!-- JQVMap -->
-        addcss("res/plugins/jqvmap/jqvmap.min.css");
+        addcss("plugins/jqvmap/jqvmap.min.css");
         // <!-- Theme style -->
-        addcss("res/dist/css/adminlte.min.css");
+        addcss("dist/css/adminlte.min.css");
         // <!-- overlayScrollbars -->
-        addcss("res/plugins/overlayScrollbars/css/OverlayScrollbars.min.css");
+        addcss("plugins/overlayScrollbars/css/OverlayScrollbars.min.css");
         //     <!-- Daterange picker -->
-        addcss("res/plugins/daterangepicker/daterangepicker.css");
+        addcss("plugins/daterangepicker/daterangepicker.css");
         //     <!-- summernote -->
-        addcss("res/plugins/summernote/summernote-bs4.css");
+        addcss("plugins/summernote/summernote-bs4.css");
         //     <!-- Google Font: Source Sans Pro -->
         addcss("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700");
     
@@ -38,33 +38,33 @@ function Frame(){
             $('body').append('<script src="'+ url +'"></script>');
         }
             // <!-- jQuery UI 1.11.4 -->
-            addjs("res/plugins/jquery-ui/jquery-ui.min.js")
+            addjs("plugins/jquery-ui/jquery-ui.min.js")
             //  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
             $('body').append('<script>$.widget.bridge("uibutton", $.ui.button)</script>');
             //  <!-- Bootstrap 4 -->
-            addjs("res/plugins/bootstrap/js/bootstrap.bundle.min.js")
+            addjs("plugins/bootstrap/js/bootstrap.bundle.min.js")
             // <!-- ChartJS -->
-            addjs("res/plugins/chart.js/Chart.min.js")
+            addjs("plugins/chart.js/Chart.min.js")
             //  <!-- Sparkline -->
-            addjs("res/plugins/sparklines/sparkline.js")
+            addjs("plugins/sparklines/sparkline.js")
             //  <!-- JQVMap -->
-            addjs("res/plugins/jqvmap/jquery.vmap.min.js")
-            addjs("res/plugins/jqvmap/maps/jquery.vmap.usa.js")
+            addjs("plugins/jqvmap/jquery.vmap.min.js")
+            addjs("plugins/jqvmap/maps/jquery.vmap.usa.js")
             //  <!-- jQuery Knob Chart -->
-            addjs("res/plugins/jquery-knob/jquery.knob.min.js")
+            addjs("plugins/jquery-knob/jquery.knob.min.js")
             //  <!-- daterangepicker -->
-            addjs("res/plugins/moment/moment.min.js")
-            addjs("res/plugins/daterangepicker/daterangepicker.js")
+            addjs("plugins/moment/moment.min.js")
+            addjs("plugins/daterangepicker/daterangepicker.js")
             //  <!-- Tempusdominus Bootstrap 4 -->
-            addjs("res/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")
+            addjs("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")
             //  <!-- Summernote -->
-            addjs("res/plugins/summernote/summernote-bs4.min.js")
+            addjs("plugins/summernote/summernote-bs4.min.js")
             //  <!-- overlayScrollbars -->
-            addjs("res/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")
+            addjs("plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")
             //  <!-- AdminLTE App -->
-            addjs("res/dist/js/adminlte.js")
+            addjs("dist/js/adminlte.js")
             //  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-            addjs("res/dist/js/pages/dashboard.js")
+            addjs("dist/js/pages/dashboard.js")
     }
 
     function InitMainContentIndex(callback){
@@ -76,16 +76,22 @@ function Frame(){
     }
 
 
-
+    //Subfunctions
     return {
         addSidebar:function(){
         
         },
-        addContent:function (){
+        addContent:function(){
 
         },
         clearContent:function(){
 
+        },
+        setIndexName:function(name){
+            index = name
+            if(initiated){
+                data.find('#'+ index).addClass("active");
+            }
         },
         setPageName:function(name){
             pagename = name
@@ -95,22 +101,32 @@ function Frame(){
             }
         },
         init:function (){
-            InitMainContentIndex(function(mainContent){
-                $.ajax({
-                    type: "GET",
-                    url:'frame.html',
-                    data: "check",
-                    success: function(response){
+            $.ajax({
+                type: "GET",
+                url:'toolkit/frame.html',
+                data: "check",
+                success: function(response){
+                    InitMainContentIndex(function(mainContent){
                         var data = $('<div/>').html(response).contents();
                         data.find("#main-content").append(mainContent);
                         data.find("#pagename").text(pagename);
                         data.find(".breadcrumb-item.active").text(pagename);
                         data.find('#'+ index).addClass("active");
                         $("body").prepend(data);
-                    }});
+                    });
+                }
             });
-            InitJS();
-            initiated = true;
+
+            $(document).ready(function(){ 
+                //CORS anywhere function
+                $.ajaxPrefilter(function(options) {
+                    if (options.crossDomain && jQuery.support.cors) {
+                        options.url = 'https://cors-f.herokuapp.com/' + options.url;
+                    }
+                });
+                InitJS();
+                initiated = true;
+            });
             return;
         }
     }
