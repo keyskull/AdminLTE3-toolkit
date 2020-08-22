@@ -101,32 +101,32 @@ function Frame(){
             }
         },
         init:function (){
-            $(document).ready(function(){ 
-                InitMainContentIndex(function(mainContent){
-                    //CORS anywhere function
-                    $.ajaxPrefilter(function(options) {
-                        if (options.crossDomain && jQuery.support.cors) {
-                            options.url = 'https://cors-f.herokuapp.com/' + options.url;
-                        }
+            $.ajax({
+                type: "GET",
+                url:'toolkit/frame.html',
+                data: "check",
+                success: function(response){
+                    InitMainContentIndex(function(mainContent){
+                        var data = $('<div/>').html(response).contents();
+                        data.find("#main-content").append(mainContent);
+                        data.find("#pagename").text(pagename);
+                        data.find(".breadcrumb-item.active").text(pagename);
+                        data.find('#'+ index).addClass("active");
+                        $("body").prepend(data);
                     });
-
-                    $.ajax({
-                        type: "GET",
-                        url:'toolkit/frame.html',
-                        data: "check",
-                        success: function(response){
-                            var data = $('<div/>').html(response).contents();
-                            data.find("#main-content").append(mainContent);
-                            data.find("#pagename").text(pagename);
-                            data.find(".breadcrumb-item.active").text(pagename);
-                            data.find('#'+ index).addClass("active");
-                            $("body").prepend(data);
-                        }});
-                    initiated = true;
-                });
-            InitJS();
+                }
             });
 
+            $(document).ready(function(){ 
+                //CORS anywhere function
+                $.ajaxPrefilter(function(options) {
+                    if (options.crossDomain && jQuery.support.cors) {
+                        options.url = 'https://cors-f.herokuapp.com/' + options.url;
+                    }
+                });
+                InitJS();
+                initiated = true;
+            });
             return;
         }
     }
