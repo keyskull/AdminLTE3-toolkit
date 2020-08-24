@@ -1,9 +1,10 @@
 
 
-function Frame(){ 
-    var pagename = "Cullen's Portflio";
-    var index = "";
-    var initiated = false;
+function A3toolkit(){ 
+    this.pagetitle = "Cullen's Portflio";
+    this.index = "";
+    this.initiated = false;
+
     function InitCSS(){
         function addcss(url){
             $('head').append('<link rel="stylesheet" href="'+ url +'">');
@@ -93,8 +94,8 @@ function Frame(){
                 data.find('#'+ index).addClass("active");
             }
         },
-        setPageName:function(name){
-            pagename = name
+        setPageTitle:function(name){
+            pagetitle = name
             if(initiated){
                 $("#pagename").text(name)
                 $(".breadcrumb-item.active").text(name)
@@ -109,8 +110,8 @@ function Frame(){
                     InitMainContentIndex(function(mainContent){
                         var data = $('<div/>').html(response).contents();
                         data.find("#main-content").append(mainContent);
-                        data.find("#pagename").text(pagename);
-                        data.find(".breadcrumb-item.active").text(pagename);
+                        data.find("#pagename").text(pagetitle);
+                        data.find(".breadcrumb-item.active").text(pagetitle);
                         data.find('#'+ index).addClass("active");
                         $("body").prepend(data);
                     });
